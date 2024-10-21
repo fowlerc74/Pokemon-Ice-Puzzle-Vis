@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/react-gh-pages/static/css/main.f855e6bc.css",
-    "main.js": "/react-gh-pages/static/js/main.69702d39.js",
-    "static/js/453.269336d5.chunk.js": "/react-gh-pages/static/js/453.269336d5.chunk.js",
-    "index.html": "/react-gh-pages/index.html",
-    "main.f855e6bc.css.map": "/react-gh-pages/static/css/main.f855e6bc.css.map",
-    "main.69702d39.js.map": "/react-gh-pages/static/js/main.69702d39.js.map",
-    "453.269336d5.chunk.js.map": "/react-gh-pages/static/js/453.269336d5.chunk.js.map"
+    "main.css": "/pokemon-ice-puzzle/static/css/main.f855e6bc.css",
+    "main.js": "/pokemon-ice-puzzle/static/js/main.5622ef61.js",
+    "static/js/453.269336d5.chunk.js": "/pokemon-ice-puzzle/static/js/453.269336d5.chunk.js",
+    "index.html": "/pokemon-ice-puzzle/index.html",
+    "main.f855e6bc.css.map": "/pokemon-ice-puzzle/static/css/main.f855e6bc.css.map",
+    "main.5622ef61.js.map": "/pokemon-ice-puzzle/static/js/main.5622ef61.js.map",
+    "453.269336d5.chunk.js.map": "/pokemon-ice-puzzle/static/js/453.269336d5.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.f855e6bc.css",
-    "static/js/main.69702d39.js"
+    "static/js/main.5622ef61.js"
   ]
 }
