@@ -1,0 +1,14 @@
+.graph {
+    /* border: 5px solid red; */
+    flex-grow: 1;
+    width: 50%;
+    height: 100vh;
+}
+
+.graphwindow {
+    /* border: 5px solid lime; */
+    background-color: #E0E0E0;
+    width: fit-content;
+    height: fit-content;
+    align-content: center;
+}

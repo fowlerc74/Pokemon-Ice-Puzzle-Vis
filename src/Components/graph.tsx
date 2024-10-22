@@ -1,6 +1,7 @@
 import ForceGraph2D from 'react-force-graph-2d';
+import './graph.css'
 
-const Graph = () => {
+export default function Graph() {
     const myData = {
         "nodes": [
             {
@@ -23,11 +24,16 @@ const Graph = () => {
     } 
 
     return (
-        <div>
+        <div className="graph">
             graph
-            <ForceGraph2D graphData={myData} />
+            <div className="graphwindow">
+                <ForceGraph2D 
+                    graphData={myData} 
+                    width={800}
+                    height={800}
+                    backgroundColor={'light'}
+                />
+            </div>
         </div>
     )
 }
-
-export default Graph;
