@@ -7,9 +7,7 @@ export interface Tile {
     rock: boolean,
     start: boolean,
     end: boolean,
-    slidable: boolean,
-    hasPlayer: boolean,
-    TESTINGnum: number
+    slidable: boolean
 }
 
 function App() {
@@ -37,7 +35,6 @@ function App() {
     ]
 
     let puzzle: Tile[][] = [];
-    let counter: number = 0;
     // let player: number[] = [13, 14];
     const [player, setPlayer] = useState(start);
 
@@ -48,11 +45,8 @@ function App() {
                 rock: false,
                 start: false,
                 end: false,
-                slidable: true,
-                hasPlayer: false,
-                TESTINGnum: counter
+                slidable: true
             };
-            counter++;
         }
     }
 
@@ -67,7 +61,6 @@ function App() {
 
     puzzle[start[0]][start[1]].start = true;
     // puzzle[start[0]][start[1]].slidable = false;
-    puzzle[start[0]][start[1]].hasPlayer = true;
     puzzle[start[0]][start[1]].rock = false;
 
     for (let endTile of end) {
@@ -106,36 +99,9 @@ function App() {
                 tempPlayer[0] += vertical;
                 tempPlayer[1] += horizontal;
             }
-            puzzle[player[0]][player[1]].hasPlayer = false;
             setPlayer(tempPlayer);
-            puzzle[tempPlayer[0]][tempPlayer[1]].hasPlayer = true;
         } catch {
             console.error('ERROR: Out of Bounds Error');
-        }
-    }
-
-    function checkPlayerLocation() {
-        let playerLocations: number[][] = [];
-        let playerFound: boolean = false;
-        for (let i = 0; i < puzzleHeight; i++) {
-            for (let j = 0; j < puzzleWidth; j++) {
-                if (puzzle[i][j].hasPlayer) {
-                    playerLocations[playerLocations.length] = [i, j];
-                    if (playerFound) {
-                        console.error("ERROR: Player in multiple spots.", playerLocations)
-                    } else {
-                        playerFound = true;
-                    }
-                } 
-            }
-        }
-        if (playerLocations.length === 0) {
-            console.error("ERROR: Player not found.")
-        } else if ( !(player[0] === playerLocations[0][0] && player[1] === playerLocations[0][1]) ) {
-            console.error("ERROR: Player location mismatch.", 
-                "Player", player, 
-                "Grid Location", playerLocations[0]
-            );
         }
     }
 
