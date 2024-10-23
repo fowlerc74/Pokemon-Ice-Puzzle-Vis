@@ -1,13 +1,14 @@
-import { Tile } from '../App'
-import './puzzle.css'
+
+import Puzzle, { Tile } from '../Puzzle'
+import './puzzlewindow.css'
 
 export interface IProps {
-    puzzle: Tile[][],
+    puzzle: Puzzle,
     player: number[]
 }
 
-// export default function Puzzle({ puzzle }: { puzzle: Tile[][]}) {
-export default function Puzzle(props: IProps) {
+export default function PuzzleWindow(props: IProps) {
+    let puzzleArray: Tile[][] = props.puzzle.getArray();
     return (
         <div className="puzzle-window">
             <div className="puzzle">
@@ -21,7 +22,7 @@ export default function Puzzle(props: IProps) {
                 }>
                     {props.player[0]}
                 </div>
-                {props.puzzle.map((row, i) => (
+                {puzzleArray.map((row, i) => (
                     <div key={i} className="row">
                         {row.map((tile, j) => (
                             <div 
