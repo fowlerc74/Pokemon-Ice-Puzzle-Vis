@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './App.css';
-import Graph from './Components/graph';
+import Graph from './Components/graphwindow';
 import PuzzleWindow from './Components/puzzlewindow';
 import Puzzle from './Puzzle';
 
-export interface Tile {
-    rock: boolean,
-    start: boolean,
-    end: boolean,
-    slidable: boolean
-}
-
 function App() {
 
-    let puzzle = new Puzzle(16, 14);
+    let puzzle = useMemo(() => new Puzzle(16, 14), []);
     const [player, setPlayer] = useState(puzzle.getStart());
     const [key, setKey] = useState("");
 
@@ -47,22 +40,10 @@ function App() {
         }
     }, [player, puzzle]);
 
-    // document.addEventListener('keydown', function(event) {
-    //     if (event.key === "w" || event.key === "ArrowUp") {
-    //         movePlayer(-1, 0);
-    //     } else if (event.key === "a" || event.key === "ArrowLeft") {
-    //         movePlayer(0, -1);
-    //     } else if (event.key === "s" || event.key === "ArrowDown") {
-    //         movePlayer(1, 0);
-    //     } else if (event.key === "d" || event.key === "ArrowRight") {
-    //         movePlayer(0, 1);
-    //     } 
-    // })    
-
     return (
         <div className="App">
             <PuzzleWindow puzzle={puzzle} player={player}/>
-            <Graph puzzle={puzzle} player={player}/>
+            <Graph puzzle={puzzle}/>
             {/* {player}
             <br />
             {key} */}

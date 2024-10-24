@@ -34,7 +34,7 @@ export default function PuzzleWindow(props: IProps) {
                                 ${tile.slidable ? "ice " : ""} +
                                 ${tile.start ? "start " : ""} `
                             }>
-                                {tile.rock ? "" : ""}
+                                {i}, {j}
                             </div>
                         ))}
                     </div> 
