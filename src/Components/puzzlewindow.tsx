@@ -20,7 +20,7 @@ export default function PuzzleWindow(props: IProps) {
                             left: props.player[1] * 50 + 10
                         }
                 }>
-                    {props.player[0]}
+                    {/* {props.player[0]} */}
                 </div>
                 {puzzleArray.map((row, i) => (
                     <div key={i} className="row">

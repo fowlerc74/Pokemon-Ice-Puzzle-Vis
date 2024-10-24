@@ -1,10 +1,11 @@
 import ForceGraph2D from 'react-force-graph-2d';
 import './graphwindow.css'
 import Puzzle from '../Puzzle';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 export interface IProps {
-    puzzle: Puzzle
+    puzzle: Puzzle,
+    player: number[]
 }
 
 interface Graph {
@@ -15,7 +16,8 @@ interface Graph {
 interface Node {
     id: string,
     name: string,
-    val: number
+    val: number,
+    color: string
 }
 
 interface Link {
@@ -24,6 +26,12 @@ interface Link {
 }
 
 export default function GraphWindow(props: IProps) {
+
+    const orange = "#FFA500";
+    const green = "#ADFF2F";
+    const red = "#FF0000";
+    const blue = "#0055FF";
+
 
     const graph: Graph = useMemo(() => {
         function createGraph(puzzle: Puzzle): Graph {
@@ -35,57 +43,49 @@ export default function GraphWindow(props: IProps) {
             function playersEqual(player1: number[], player2: number[]): boolean {
                 return (player1[0] === player2[0]) && (player1[1] === player2[1]);
             }
-
-            const testplayer: number[] = [5, 7];
-            console.log('before up', testplayer);
-            console.log(puzzle.move([testplayer[0], testplayer[1]], -1, 0), 'up')
-            console.log('before down', testplayer);
-            console.log(puzzle.move(testplayer, 1, 0), 'down')
-            console.log('before left', testplayer);
-            console.log(puzzle.move(testplayer, 0, -1), 'left')
-            console.log('before right', testplayer);
-            console.log(puzzle.move(testplayer, 0, 1), 'right')
     
             // Push node to graph
             // Move Up, Right, Down, Left
             // For each direction, if moved and position is new, traverse again
             function traversePuzzle(currentPlayer: number[], counter: number): number {
-                let nodeID = currentPlayer[0].toString() + ',' + currentPlayer[1].toString();
-                // console.log('start', counter, currentPlayer);
-                if ( ! graph.nodes.find((node) => node.id === nodeID)) {
-                    graph.nodes.push({
-                        "id": nodeID,
-                        "name": '(' + nodeID + ')',
-                        "val": 1
-                    });
-                } else {
+                if ( currentPlayer[0] < 0) {
                     return counter;
                 }
-                // console.log(graph.nodes.length);
-    
-                // console.log( currentPlayer, props.puzzle.move(currentPlayer, -1, 0), playersEqual(currentPlayer, props.puzzle.move(currentPlayer, -1, 0)) )
-
-                if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, -1, 0))) { // Up
-                    console.log("up")
-                    counter += traversePuzzle(props.puzzle.move(currentPlayer, -1, 0), counter++);
-                }
                 
-                if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, 0, 1))) { // right
-                    console.log("right")
-                    counter += traversePuzzle(props.puzzle.move(currentPlayer, 0, 1), counter++);
+                let nodeID = currentPlayer[0].toString() + ',' + currentPlayer[1].toString();
+                let directions = [[-1, 0], [0, 1], [1, 0], [0, -1]];
+                for (let direction of directions) {
+                    // If attempting to move actually moves and its not an error
+                    var newPlayer = props.puzzle.move(currentPlayer, direction[0], direction[1]);
+                    if (! playersEqual(currentPlayer, newPlayer)) { 
+                        let newNodeID = newPlayer[0].toString() + ',' + newPlayer[1].toString();
+                        // If doesn't already exist
+                        if ( ! graph.nodes.find((node) => node.id === newNodeID) ) {
+                            graph.nodes.push({
+                                "id": newNodeID,
+                                "name": '(' + newNodeID + ')',
+                                "val": 1,
+                                "color": (puzzle.isEnd(newPlayer) ? "#FF0000" : "#0055FF")
+                            });
+                            counter += traversePuzzle(props.puzzle.move(currentPlayer, direction[0], direction[1]), counter++);
+                        } 
+                        graph.links.push({
+                            source: nodeID,
+                            target: newNodeID
+                        });
+                    }
                 }
 
-                if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, 1, 0))) { // down
-                    console.log("down")
-                    counter += traversePuzzle(props.puzzle.move(currentPlayer, 1, 0), counter++);
-                }
-
-                if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, 0, 1))) { // left
-                    console.log("left")
-                    counter += traversePuzzle(props.puzzle.move(currentPlayer, 0, 1), counter++);
-                }
                 return counter;
             }
+            
+            let nodeID = props.puzzle.getStart()[0].toString() + ',' + props.puzzle.getStart()[1].toString()
+            graph.nodes.push({
+                "id": nodeID,
+                "name": '(' + nodeID + ')',
+                "val": 1,
+                "color": "#ADFF2F"
+            });
 
             traversePuzzle(props.puzzle.getStart(), 1);
             return graph;
@@ -94,30 +94,14 @@ export default function GraphWindow(props: IProps) {
         return createGraph(props.puzzle);
     }, [props.puzzle])
 
-    console.log(graph);
+    useEffect(() => {
+        let currentID: string = props.player[0].toString() + ',' + props.player[1].toString();
+        let currentNode: Node | undefined = graph.nodes.find((node) => node.id === currentID);
+        if (currentNode) {
+            currentNode.color = "#FFA500"
+        }
 
-    // let tempPlayer: number[] = props.player;
-
-    // const myData = {
-    //     "nodes": [
-    //         {
-    //             "id": "id1",
-    //             "name": "name1",
-    //             "val": 1
-    //         },
-    //         { 
-    //             "id": "id2",
-    //             "name": "name2",
-    //             "val": 1 
-    //         }
-    //     ],
-    //     "links": [
-    //         {
-    //             "source": "id1",
-    //             "target": "id2"
-    //         }
-    //     ]
-    // } 
+    }, [graph.nodes, props.player])
 
     return (
         <div className="graph">
@@ -127,7 +111,10 @@ export default function GraphWindow(props: IProps) {
                     width={800}
                     height={800}
                     backgroundColor={'light'}
+                    linkDirectionalArrowLength={8}
+                    linkDirectionalArrowRelPos={1}
                 />
+                {props.player}
             </div>
         </div>
     )

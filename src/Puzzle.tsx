@@ -76,6 +76,10 @@ export default class Puzzle {
         return this.start;
     }
 
+    public isEnd(this: any, player: number[]): boolean {
+        return this.puzzle[player[0]][player[1]].end;
+    }
+
     public getArray(this: any) {
         return this.puzzle;
     }
@@ -85,25 +89,20 @@ export default class Puzzle {
             console.error('ERROR: Invalid move call.')
             return [-1, -1];
         }
+
+        var playerY = player[0];
+        var playerX = player[1];
+
         try {
-            // console.log(player);
-            let tempPlayer = player;
-            // console.log(player, tempPlayer, vertical, horizontal)
-            // if (!puzzle[tempPlayer[0] + vertical][tempPlayer[1] + horizontal].rock) {
-            //     tempPlayer[0] += vertical;
-            //     tempPlayer[1] += horizontal;
-            // }
-            while ( !this.puzzle[tempPlayer[0] + vertical][tempPlayer[1] + horizontal].rock ) {
-                tempPlayer[0] += vertical;
-                tempPlayer[1] += horizontal;
-                if (!this.puzzle[tempPlayer[0]][tempPlayer[1]].slidable) break;
+            while ( !this.puzzle[playerY + vertical][playerX + horizontal].rock ) {
+                playerY += vertical;
+                playerX += horizontal;
+                if (!this.puzzle[playerY][playerX].slidable) break;
             }
-            // let distance = (tempPlayer[0] - player[0]) + (tempPlayer[1] - player[1])
-            // console.log(tempPlayer);
-            return tempPlayer;
+            return [playerY, playerX];
         } catch {
-            console.error('ERROR: Out of Bounds Error');
-            return [-1, -2];
+            // console.error('ERROR: Out of Bounds Error.', playerY, playerX);
+            return [playerY, playerX];
         }
     }
 }
