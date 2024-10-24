@@ -17,7 +17,10 @@ interface Node {
     id: string,
     name: string,
     val: number,
-    color: string
+    color: string,
+    neighbors: Node[],
+    distance: number,
+    visited: boolean
 }
 
 interface Link {
@@ -66,7 +69,10 @@ export default function GraphWindow(props: IProps) {
                                 "id": newNodeID,
                                 "name": '(' + newNodeID + ')',
                                 "val": 1,
-                                "color": (puzzle.isEnd(newPlayer) ? red : blue)
+                                "color": (puzzle.isEnd(newPlayer) ? red : blue),
+                                neighbors: [],
+                                distance: Infinity,
+                                visited: false
                             });
                             counter += traversePuzzle(props.puzzle.move(currentPlayer, direction[0], direction[1]), counter++);
                         } 
@@ -74,6 +80,11 @@ export default function GraphWindow(props: IProps) {
                             source: nodeID,
                             target: newNodeID
                         });
+                        let fromNode = graph.nodes.find((node) => node.id === nodeID);
+                        let toNode = graph.nodes.find((node) => node.id === newNodeID);
+                        if (fromNode && toNode) {
+                            fromNode.neighbors.push(toNode);
+                        }
                     }
                 }
 
@@ -85,7 +96,10 @@ export default function GraphWindow(props: IProps) {
                 "id": nodeID,
                 "name": '(' + nodeID + ')',
                 "val": 1,
-                "color": green
+                "color": green,
+                neighbors: [],
+                distance: 0,
+                visited: false
             });
 
             traversePuzzle(props.puzzle.getStart(), 1);
@@ -99,12 +113,15 @@ export default function GraphWindow(props: IProps) {
         let currentID: string = props.player[0].toString() + ',' + props.player[1].toString();
         let currentNode: Node | undefined = graph.nodes.find((node) => node.id === currentID);
         if (currentNode) {
-            currentNode.color = darkblue
-            console.log(currentNode.color === darkblue)
-        } else {
-            console.log('what');
-        }
+            currentNode.color = green
+            console.log(currentNode.color === green)
+        } 
     }, [graph.nodes, props.player])
+
+    function dijkstra() {
+        let unvisited: Node[] = []
+        graph.nodes.forEach(node => unvisited.push(Object.assign({}, node)));
+    }
 
     return (
         <div className="graph">
@@ -117,7 +134,7 @@ export default function GraphWindow(props: IProps) {
                     linkDirectionalArrowLength={8}
                     linkDirectionalArrowRelPos={1}
                 />
-                {props.player}
+                <button onClick={dijkstra}> Dijkstra's </button>
             </div>
         </div>
     )
