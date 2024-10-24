@@ -29,7 +29,7 @@ function App() {
 
         function movePlayer(y: number, x: number) {
             let newPos = puzzle.move(player, y, x);
-            console.log(newPos);
+            // console.log(newPos);
             setPlayer(newPos);
         }
 

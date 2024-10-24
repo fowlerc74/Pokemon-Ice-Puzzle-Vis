@@ -30,7 +30,8 @@ export default function GraphWindow(props: IProps) {
     const orange = "#FFA500";
     const green = "#ADFF2F";
     const red = "#FF0000";
-    const blue = "#0055FF";
+    const blue = "#2277FF";
+    const darkblue = "#0033BB"
 
 
     const graph: Graph = useMemo(() => {
@@ -65,7 +66,7 @@ export default function GraphWindow(props: IProps) {
                                 "id": newNodeID,
                                 "name": '(' + newNodeID + ')',
                                 "val": 1,
-                                "color": (puzzle.isEnd(newPlayer) ? "#FF0000" : "#0055FF")
+                                "color": (puzzle.isEnd(newPlayer) ? red : blue)
                             });
                             counter += traversePuzzle(props.puzzle.move(currentPlayer, direction[0], direction[1]), counter++);
                         } 
@@ -84,7 +85,7 @@ export default function GraphWindow(props: IProps) {
                 "id": nodeID,
                 "name": '(' + nodeID + ')',
                 "val": 1,
-                "color": "#ADFF2F"
+                "color": green
             });
 
             traversePuzzle(props.puzzle.getStart(), 1);
@@ -98,9 +99,11 @@ export default function GraphWindow(props: IProps) {
         let currentID: string = props.player[0].toString() + ',' + props.player[1].toString();
         let currentNode: Node | undefined = graph.nodes.find((node) => node.id === currentID);
         if (currentNode) {
-            currentNode.color = "#FFA500"
+            currentNode.color = darkblue
+            console.log(currentNode.color === darkblue)
+        } else {
+            console.log('what');
         }
-
     }, [graph.nodes, props.player])
 
     return (
