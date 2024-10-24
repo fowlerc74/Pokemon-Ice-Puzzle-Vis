@@ -40,6 +40,12 @@ function App() {
         }
     }, [player, puzzle]);
 
+    // const testplayer = [6,11];
+    // console.log(testplayer, puzzle.move(testplayer, -1, 0), 'up')
+    // console.log(testplayer, puzzle.move(testplayer, 1, 0), 'down')
+    // console.log(testplayer, puzzle.move(testplayer, 0, -1), 'left')
+    // console.log(testplayer, puzzle.move(testplayer, 0, 1), 'right')
+
     return (
         <div className="App">
             <PuzzleWindow puzzle={puzzle} player={player}/>

@@ -36,18 +36,22 @@ export default function GraphWindow(props: IProps) {
                 return (player1[0] === player2[0]) && (player1[1] === player2[1]);
             }
 
-            let testplayer: number[] = [5, 5]
-            console.log(props.puzzle.move(testplayer, -1, 0))
-            console.log(props.puzzle.move(testplayer, 1, 0))
-            console.log(props.puzzle.move(testplayer, 0, -1))
-            console.log(props.puzzle.move(testplayer, 0, 1))
+            const testplayer: number[] = [5, 7];
+            console.log('before up', testplayer);
+            console.log(puzzle.move([testplayer[0], testplayer[1]], -1, 0), 'up')
+            console.log('before down', testplayer);
+            console.log(puzzle.move(testplayer, 1, 0), 'down')
+            console.log('before left', testplayer);
+            console.log(puzzle.move(testplayer, 0, -1), 'left')
+            console.log('before right', testplayer);
+            console.log(puzzle.move(testplayer, 0, 1), 'right')
     
             // Push node to graph
             // Move Up, Right, Down, Left
             // For each direction, if moved and position is new, traverse again
             function traversePuzzle(currentPlayer: number[], counter: number): number {
                 let nodeID = currentPlayer[0].toString() + ',' + currentPlayer[1].toString();
-                console.log('start', counter, currentPlayer);
+                // console.log('start', counter, currentPlayer);
                 if ( ! graph.nodes.find((node) => node.id === nodeID)) {
                     graph.nodes.push({
                         "id": nodeID,
@@ -57,29 +61,29 @@ export default function GraphWindow(props: IProps) {
                 } else {
                     return counter;
                 }
-                console.log(graph.nodes.length);
+                // console.log(graph.nodes.length);
     
                 // console.log( currentPlayer, props.puzzle.move(currentPlayer, -1, 0), playersEqual(currentPlayer, props.puzzle.move(currentPlayer, -1, 0)) )
 
-                // if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, -1, 0))) { // Up
-                //     console.log("up")
-                //     counter += traversePuzzle(props.puzzle.move(currentPlayer, -1, 0), counter++);
-                // }
+                if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, -1, 0))) { // Up
+                    console.log("up")
+                    counter += traversePuzzle(props.puzzle.move(currentPlayer, -1, 0), counter++);
+                }
                 
-                // if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, 0, 1))) { // right
-                //     console.log("right")
-                //     counter += traversePuzzle(props.puzzle.move(currentPlayer, 0, 1), counter++);
-                // }
+                if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, 0, 1))) { // right
+                    console.log("right")
+                    counter += traversePuzzle(props.puzzle.move(currentPlayer, 0, 1), counter++);
+                }
 
-                // if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, 1, 0))) { // down
-                //     console.log("down")
-                //     counter += traversePuzzle(props.puzzle.move(currentPlayer, 1, 0), counter++);
-                // }
+                if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, 1, 0))) { // down
+                    console.log("down")
+                    counter += traversePuzzle(props.puzzle.move(currentPlayer, 1, 0), counter++);
+                }
 
-                // if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, 0, 1))) { // left
-                //     console.log("left")
-                //     counter += traversePuzzle(props.puzzle.move(currentPlayer, 0, 1), counter++);
-                // }
+                if (! playersEqual(currentPlayer, props.puzzle.move(currentPlayer, 0, 1))) { // left
+                    console.log("left")
+                    counter += traversePuzzle(props.puzzle.move(currentPlayer, 0, 1), counter++);
+                }
                 return counter;
             }
 

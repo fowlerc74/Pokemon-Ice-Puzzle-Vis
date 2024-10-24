@@ -9,8 +9,8 @@ export default class Puzzle {
     private puzzleWidth: number = 16;
     private puzzleHeight: number = 14;
     // Coordinates are (y, x) from top left
-    private start = [5, 5];
-    // private start = [13, 14];
+    // private start = [5, 5];
+    private start = [13, 14];
     private end = [[7, 15], [8, 15]];
     private rocks = [
         [1, 9],
